@@ -89,32 +89,31 @@ def warn(*args, **kwargs):
 import warnings
 warnings.warn = warn
 
-grid.fit(X_train, y_train)
+grid.fit(TRAIN_DATASETS[1], y_train)
 
 print(f"Mejores hiperparámetros: {grid.best_params_}")
 
 
 model = XGBClassifier(
-    max_depth=4,             
+    max_depth=3,             
     min_child_weight=3,      
-    subsample=0.8,
-    colsample_bytree=0.8,
-    n_estimators=70,         
-    learning_rate=0.05,      
-    reg_alpha=0.5,
-    reg_lambda=1.0,
+    subsample=1,
+    colsample_bytree=1,
+    n_estimators=50,         
+    learning_rate=0.1,      
+    reg_alpha=1,
+    reg_lambda=0,
     random_state=42,
     eval_metric='logloss',
-    use_label_encoder=False
 )
 
-model.fit(X_train, y_train)
+model.fit(TRAIN_DATASETS[1], y_train)
 
-y_pred_train = model.predict(X_train)
-y_pred_test = model.predict(X_test)
+y_pred_train = model.predict(TRAIN_DATASETS[1])
+y_pred_test = model.predict(TEST_DATASETS[1])
 
 print(f"Train: {accuracy_score(y_train, y_pred_train)}")
 print(f"Test: {accuracy_score(y_test, y_pred_test)}")
 
 ## Guardando el modelo
-dump(model, open("../models/boosting_classifier_42.sav", "wb"))
+dump(model, open("../models/boosting_classifier_sin_outliers_42.sav", "wb"))
